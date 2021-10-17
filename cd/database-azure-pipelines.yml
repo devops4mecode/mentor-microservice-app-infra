@@ -1,0 +1,34 @@
+trigger:
+  branches:
+    include:
+      - "*"
+  paths:
+    include:
+      - prod/database
+    exclude:
+      - README.md
+      - CHANGELOG.md
+      - Makefile
+
+resources:
+  repositories:
+    - repository: default
+      type: git
+      name: TheWorld
+
+variables:
+  - group: common-vars
+    
+pool:
+  vmImage: $(POOL_IMAGE)
+
+stages:
+  - stage: main
+    displayName: main
+    jobs:
+      - template: templates/job-aws-terraform-deploy.yml@default
+        parameters:
+          path: prod/database
+          jobName: Database_Prod
+          awsConnection: AWS_CONNECTION
+          environment: Database - Prod

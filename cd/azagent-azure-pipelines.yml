@@ -1,0 +1,38 @@
+trigger:
+  branches:
+    include:
+      - "*"
+  paths:
+    include:
+      - prod/service-azagent
+    exclude:
+      - README.md
+      - CHANGELOG.md
+      - Makefile
+
+resources:
+  repositories:
+    - repository: default
+      type: git
+      name: TheWorld
+
+variables:
+  - group: common-vars
+    
+pool:
+  vmImage: $(POOL_IMAGE)
+
+stages:
+  - stage: main
+    displayName: main
+    jobs:
+      - template: templates/job-aws-terraform-deploy.yml@default
+        parameters:
+          path: prod/service-azagent
+          jobName: AZAgent_Prod
+          awsConnection: AWS_CONNECTION
+          environment: AZAgent - Prod
+          # Pass sensitive data from Azure DevOps to terraform
+          tf_input:
+            TF_VAR_VSTS_ACCOUNT: $(VSTS_ACCOUNT)
+            TF_VAR_VSTS_TOKEN: $(AZDO_PERSONAL_ACCESS_TOKEN)
