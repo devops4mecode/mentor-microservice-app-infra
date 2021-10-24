@@ -14,7 +14,7 @@ resources:
   repositories:
     - repository: default
       type: git
-      name: TheWorld
+      name: microservice-theworld
 
 variables:
   - group: common-vars
