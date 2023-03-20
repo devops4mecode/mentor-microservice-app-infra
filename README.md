@@ -1,4 +1,4 @@
-# Infra Repo
+# Mentor: Infra Repo for AWS ECS and RDS
 
 The Infra Repo to provision entire backend for Sample Micro-services Project
 
